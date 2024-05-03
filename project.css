@@ -1,0 +1,39 @@
+/* adding background color to the navigation bar */
+.NavBar {
+    background-color: rgb(255, 255, 255);
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+/* NavBar Logo*/
+.NavBarLogo img {
+    width: 200px; /*logo size */
+    height: auto; 
+}
+/* NavBar Text */
+.NavBar a {
+    color: #000000;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+/* NavBar when hovering over text */
+.NavBar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/*NavBar login position*/
+.NavBar a.login {
+    float: right;
+    margin-left: auto;
+}
+
+/* background colour of the page (body) */
+body {
+    background-color:rgb(255, 255, 255)
+}
