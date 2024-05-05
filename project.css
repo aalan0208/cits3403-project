@@ -12,7 +12,7 @@
     width: 200px; /*logo size */
     height: auto; 
 }
-/* NavBar Text */
+/* NavBar Text */   
 .NavBar a {
     color: #000000;
     text-align: center;
@@ -36,4 +36,132 @@
 /* background colour of the page (body) */
 body {
     background-color:rgb(255, 255, 255)
+}
+
+.picture img {
+    width:100%;
+    height:100vh;
+    object-fit:cover;
+}
+
+* 
+{box-sizing:border-box}
+
+
+/* Slide-show container */
+.slideshow-container {
+   width:100%;
+   height:100vh;
+   position:relative;
+   overflow:hidden;
+   float:left;
+}
+
+/* hide images by default */
+.mySlides {
+    display:none;
+    width:55%;
+    float:left;
+}
+
+.prev {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 0; /* Adjusted to position the left arrow at the very left of the page */
+    transform: translateY(-50%);
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: rgb(64, 63, 63);
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 0; /* Position the right arrow at the very right of the page */
+    transform: translateY(-50%);
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: rgb(64, 63, 63);
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 3px 0 0 3px;
+    user-select: none;
+}
+
+/*position of the next button to the right */
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+div.style.center {
+    position: absolute;
+    bottom: 1000px; /* Adjust the distance from the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+    z-index: 1000; /* Ensure the dots are above other elements */
+  }
+
+
+
+/* the dots at the bottom of page */
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+
+.active, .dot:hover {
+    background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+  
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+} 
+
+.slide-text{
+    position: absolute;
+    top: 25%;
+    right: 270px; /* Adjust the distance from the right side */
+    transform: translateY(-50%,-50%);
+    text-align: right;
+    color: rgb(0, 0, 0); /* Text color */
+}
+
+.slide-text h2 {
+    font-size: 24px; /* Adjust title font size */
+    margin-bottom: 10px; /* Adjust space between title and description */
+}
+
+.slide-text p {
+    font-size: 18px; /* Adjust description font size */
+    margin-bottom: 0; /* Remove default bottom margin */
 }
