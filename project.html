@@ -4,6 +4,34 @@
     <title>StudySmart</title>
     <link rel="stylesheet" type="text/css" href="project.css">
     <script src="project.js"></script>
+
+    <style>
+        #paragraph {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Automatically fit columns with a minimum width of 250px */
+            grid-gap: 20px; /* Add some gap between columns */
+            text-align: center; /* Center align the text */
+            align-items: center; /* Center align vertically */
+        }
+
+        /* Add a border for better visibility */
+        #paragraph > div {
+            padding: 20px;
+            border: 1px solid #ccc; 
+        }
+
+        /* Remove default margin for consistency */
+        #paragraph h2 {
+            margin-top: 0; 
+        }
+
+        /* Remove default margin for consistency */
+        #paragraph p {
+            margin: 0; 
+        }
+
+    </style>
+
 </head>
 <body>
     <div class="NavBar">
@@ -12,8 +40,114 @@
         </a>
         <a href="subject">Subject</a>
         <a href="contact">Contact</a>
-        <a href="aboutus">About Us</a>
+        <a href="howitworks">How it Works</a>
+        <a href="event">Events</a>
         <a href="login" class = "login">Login</a>
     </div>
+
+    <!-- Slideshow container-->
+    <div class = "slideshow-container">
+
+        <!-- Picture below -->
+        <div class = "mySlides fade">
+            <img src = "kidstudying.jpg" style = "width: 100%"> 
+            <div class = "slide-text">
+                <h2> Exam Revision </h2>
+                <ul>
+                    <li> Every Wace Subject </li>
+                    <li> Perths Most Experienced Tutors </li>
+                    <li> Difficult Exam Questions Made Easy </li>
+                    <li> Best Tips And Tricks To Maximise Mark</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class = "mySlides fade">
+            <img src = "kidstudying2.jpeg" style = "width: 100%"> 
+            <div class = "slide-text">
+                <h2> Home Tuition </h2>
+                <p> Our team provides 1 on 1 help.....</p>
+            </div>
+        </div>
+
+        <div class = "mySlides fade">
+            <img src = "kidstudying3.jpeg" style = "width: 100%"> 
+            <div class = "slide-text">
+                <h2> Group Study </h2>
+                <p> awdjbegbbhgeehgbu </p>
+            </div>
+        </div>
+
+        <!-- Next and previous buttons -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a> <!-- standard way-->
+        <a class="next" onclick="plusSlides(1)">&#10095;</a> <!-- standard way -->
+    </div>
+
+    <!--Dots and circles -->
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+    
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.getElementsByClassName("mySlides");
+        
+        // Function to show slides
+        function showSlides() {
+            // Hide all slides
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            // Increment slide index
+            slideIndex++;
+            // if slide reaches the end, it goes to the first 
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+            // Display the current slide
+            slides[slideIndex - 1].style.display = "block";
+            // Call the function recursively after 10 seconds (page changes after 10 seconds)
+            setTimeout(showSlides, 10000);
+        }
+
+        // Function to show the next slide
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // Show the slides when the page loads
+        showSlides();
+    </script>
+
+    <div id = "paragraph">
+        <div>
+        <h2> Group Tuition </h2>
+        <p> Our Small Group Tuition is renowned for improving student performance.
+
+            Classes are maxed out at 6 students only, enabling high interaction and individual attention. 
+            
+            Unlike others, we are NOT lecture-based. Our groups are run by our most experienced, dynamic tutors whose students commonly increase their initial marks by 20 %. </p>
+        </div>
+        
+        <div>
+        <h2> Home tuition</h2>
+        <p> Our tutors will visit your home, school, local library, or workplace to provide one-on-one tuition at a time and day convenient to you.
+
+            We have sessions available 7 days a week with no extra charge after hours or on weekends.
+            
+            All subjects covered! Highly interactive sessions (not lectures). </p>
+        </div>
+
+
+        <div>
+        <h2> Workshops </h2>
+        <p> Study Skills and Advanced Study Skills Workshops have dramatically improved attendees’ percentage increases and motivation.
+
+            Based on over 30 years of experience delivering these courses privately and in West Australian schools, on average we have seen across-the-board increases of 10% to 40%! </p>
+        </div>
+    </div>
 </body>
-</html>
+</html>  
