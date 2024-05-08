@@ -6,10 +6,10 @@ body{
     background-size: cover;
 }
 
-.container-fluid{
+#myDiv1{
 	max-height: 70%;
 	max-width: 600px;
-	border-style: outset;
+	border-style: solid;
 	border-color: gray;
 	border-width: 5px;
 	border-radius: 28px;
@@ -23,9 +23,21 @@ body{
 	overflow:hidden;
 }
 
-.container-fluid img{
-	height:auto;
-	max-width:100%;
+#myDiv2{
+	max-height: 60%;
+	max-width: 60%;
+	border-style: outset;
+	border-color: gray;
+	border-width: 5px;
+	border-radius: 28px;
+	background-color: white;
+	padding:50px;
+	/* Center relative to the viewport */
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	overflow:hidden;
 }
 
 button{
@@ -41,13 +53,12 @@ button:hover{
 	color:white;
 }
 
-a{
-	text-decoration: none;
-	color: #266EA7;
+input{
+	border-style: solid;
+	border-color:lightgray;
 }
 
-.input-container {
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
+a{
+	color:gray;
+	text-decoration: none;
 }
