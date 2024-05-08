@@ -1,4 +1,4 @@
-body{
+.body1{
 	/* Set the background image */
     background-image: url("pictures/SignInBackground.jpg");
     /* Center and scale the background image */
@@ -6,9 +6,18 @@ body{
     background-size: cover;
 }
 
+.body2{
+	/* Set the background image */
+    background-image: url("pictures/Education.jpg");
+    /* Center and scale the background image */
+    background-position: center;
+    background-size: cover;
+
+}
+
 #myDiv1{
 	max-height: 70%;
-	max-width: 600px;
+	max-width: 60%;
 	border-style: solid;
 	border-color: gray;
 	border-width: 5px;
@@ -21,10 +30,11 @@ body{
 	left:50%;
 	transform: translate(-50%, -50%);
 	overflow:hidden;
+	overflow-y: auto;
 }
 
 #myDiv2{
-	max-height: 60%;
+	max-height: 80%;
 	max-width: 60%;
 	border-style: outset;
 	border-color: gray;
@@ -38,6 +48,26 @@ body{
 	left:50%;
 	transform: translate(-50%, -50%);
 	overflow:hidden;
+	overflow-y: auto;
+}
+
+#myDiv3{
+	max-width: 60%;
+	max-height: 50%;
+	border-style: solid;
+	border-color: black;
+	border-width: 5px;
+	
+	border-radius: 28px;
+	padding:20px;
+	/* Center relative to the viewport */
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	overflow:hidden;
+	overflow-y: auto;
 }
 
 button{
@@ -53,12 +83,32 @@ button:hover{
 	color:white;
 }
 
-input{
-	border-style: solid;
-	border-color:lightgray;
-}
+
 
 a{
 	color:gray;
 	text-decoration: none;
+	border-radius: 16px;
+	margin:3px;
+}
+
+a:hover{
+	color:white;
+	background-color: grey;
+	border-color: grey;
+}
+
+input{
+	border-style: solid;
+	border-color:lightgray;
+	margin:5px;
+	width:100%;
+}
+
+label{
+	display: block;
+}
+
+form{
+	text-align: center;
 }
