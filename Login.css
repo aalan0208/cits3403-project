@@ -1,4 +1,4 @@
-body{
+.body1{
 	/* Set the background image */
     background-image: url("pictures/SignInBackground.jpg");
     /* Center and scale the background image */
@@ -6,9 +6,36 @@ body{
     background-size: cover;
 }
 
-.container-fluid{
+.body2{
+	/* Set the background image */
+    background-image: url("pictures/Education.jpg");
+    /* Center and scale the background image */
+    background-position: center;
+    background-size: cover;
+
+}
+
+#myDiv1{
 	max-height: 70%;
-	max-width: 600px;
+	max-width: 60%;
+	border-style: solid;
+	border-color: gray;
+	border-width: 5px;
+	border-radius: 28px;
+	background-color: white;
+	padding:50px;
+	/* Center relative to the viewport */
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	overflow:hidden;
+	overflow-y: auto;
+}
+
+#myDiv2{
+	max-height: 80%;
+	max-width: 60%;
 	border-style: outset;
 	border-color: gray;
 	border-width: 5px;
@@ -21,11 +48,26 @@ body{
 	left:50%;
 	transform: translate(-50%, -50%);
 	overflow:hidden;
+	overflow-y: auto;
 }
 
-.container-fluid img{
-	height:auto;
-	max-width:100%;
+#myDiv3{
+	max-width: 60%;
+	max-height: 50%;
+	border-style: solid;
+	border-color: black;
+	border-width: 5px;
+	
+	border-radius: 28px;
+	padding:20px;
+	/* Center relative to the viewport */
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	overflow:hidden;
+	overflow-y: auto;
 }
 
 button{
@@ -41,13 +83,32 @@ button:hover{
 	color:white;
 }
 
+
+
 a{
+	color:gray;
 	text-decoration: none;
-	color: #266EA7;
+	border-radius: 16px;
+	margin:3px;
 }
 
-.input-container {
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
+a:hover{
+	color:white;
+	background-color: grey;
+	border-color: grey;
+}
+
+input{
+	border-style: solid;
+	border-color:lightgray;
+	margin:5px;
+	width:100%;
+}
+
+label{
+	display: block;
+}
+
+form{
+	text-align: center;
 }
