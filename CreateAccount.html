@@ -27,7 +27,10 @@
 			</div>
 
 			<div class="col-6">
-				<form>
+				<form onsubmit="return validateForm()">
+					<label for="Name"><b>Username:</b></label>
+					<input type="text" id="Name" name="Name" required>
+
 					<label for="Email"><b>Email address:</b></label>
 					<input type="email" id="Email" name="Email" required>
 					
@@ -47,12 +50,33 @@
 				</form>
 
 				<div style="text-align: right;">
-					<a href="TODO">Help</a>
-					<a href="TODO">Privacy</a>
-					<a href="ToDo">Terms</a>
+					<a href="Help">Help</a>
+					<a href="Privacy">Privacy</a>
+					<a href="Terms">Terms</a>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<script>
+		function validateForm() {
+			var email = document.getElementById("Email").value;
+			var confirmEmail = document.getElementById("ConfEmail").value;
+			var password = document.getElementById("Pass").value;
+			var confirmPassword = document.getElementById("ConfPass").value;
+
+			if (email !== confirmEmail) {
+				alert("Email addresses do not match");
+				return false;
+			}
+
+			if (password !== confirmPassword) {
+				alert("Passwords do not match");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>
