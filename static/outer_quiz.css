@@ -1,0 +1,50 @@
+<style>
+		body{
+			background-color: #ECECEC;
+		}
+
+		.container{
+			background-color: #FFFFFF;
+			border-radius: 25px;
+			border-style: solid;
+			border-width: 2px;
+			padding: 5px;
+		}
+
+		#account:hover{
+			background-color: #CECECE;
+			border-radius: 25px;
+		}
+
+		#accountInfo{
+			display:flex;
+			flex-direction: column;
+		}
+
+		.search_input{
+			width: 60%;
+			border-style: outset;
+			border-width: 2px;
+			border-radius: 25px;
+			padding:5px;
+		}
+
+		.search_button:hover,
+		.search_input:hover{
+			background-color: #CECECE;
+		}
+
+		button{
+			border-style: solid;
+			background-color: #FFFFFF;
+			border-radius: 25px;
+			border-width: 2px;
+			margin: 3px;
+			padding: 3px;
+		}
+
+		button:hover{
+			background-color: #43B018;
+			border-style: none;
+		}
+	</style>
