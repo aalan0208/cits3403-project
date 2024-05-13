@@ -229,24 +229,9 @@
     }
 
     function saveQuiz() {
-        // Retrieve the value of the quiz title input field
-        var quizTitle = document.getElementById("quizTitle").value;
-    
-        // Retrieve other relevant data you want to save, such as selected subject and grade
-    
-        // Create an object to store the quiz data
-        var quizData = {
-            title: quizTitle,
-            // Add other relevant data here
-        };
-    
-        // Convert the quiz data object to JSON
-        var jsonData = JSON.stringify(quizData);
-    
-        // You can now save the JSON data to a database, local storage, or send it to a server using AJAX
-    
-        // For demonstration purposes, let's log the JSON data to the console
-        console.log("Quiz data saved:", jsonData);
+
+        // Redirect back to the main page with the saved quiz title as a query parameter
+        window.location.href = "main.html?quizTitle=" + encodeURIComponent(quizTitle);
     }
     
 </script>
