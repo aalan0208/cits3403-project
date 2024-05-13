@@ -18,39 +18,75 @@
 	<!-- CSS -->
 	<link rel="stylesheet" href="static/outer_quiz.css">
 
-	<script>
-		$(document).ready(function(){
-			$('#accountInfo').slideUp();
-			$('#account').click(function(){
-				$('#accountInfo').slideToggle('slow');
-			});
-		});
-	</script>
+	<!-- JavaScript -->
+	<script src="static/outer_quiz.js"></script>
 </head>
 <body>
 	<div class="container">
-		<div class="row text-center">
-			<div class="rol-12"><i style="font-size: 100px;" class="fa-solid fa-chalkboard"></i></div>
+		<!-- First row -->
+		<div class="row text-center fixed-div" id="panel">
+			<!-- First cell -->
+			<!-- Label -->
+			<div class="col-12">
+				<a href="#"><img src="pictures/Logo.jpg" alt="Logo"></a>
+			</div>
 
+			<!-- Second cell -->
+			<!-- Account-->
+			<div class="col-4">
+				<h3 id="account"><i class="fa-solid fa-file-invoice"></i> Account</h3>
+			</div>
+
+			<!-- Third cell -->
+			<!-- Search button and search bar-->
 			<div class="col-8">
 				<form action="/search" method="GET">
 					<button class="search_button" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search:</button>
-					<input class="search_input" type="text" name="q" placeholder="Search...">
+					<input  class="search_input"  type="text" name="q" placeholder="Search...">
 				</form>
-			</div>
-
-			<div class="col-4" id="accountSection">
-				<h3 id="account"><i class="fa-solid fa-file-invoice"></i> Account</h3>
-				<div id="accountInfo">
-					<button>My Account <i class="fas fa-user"></i></button>
-					<button>Settings <i class="fa-solid fa-bars"></i></button>
-					<button>Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-				</div>	
 			</div>
 		</div>
 
+		<!-- Second row-->
+		<div class="row d-none" id="sub_panel">
+			<!-- First cell-->
+			<!-- Account info-->
+			<div class="col-4">
+				<div id="accountInfo" class="d-none">
+					<button id="my_account"	>My Account 	<i class="fas fa-user"></i></button>
+					<br>
+					<button id="setting" 	>Settings 		<i class="fa-solid fa-bars"></i></button>
+					<br>
+					<button id="logout"  	>Logout 		<i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+					<br>
+					<button id="about"   	>About 			<i class="fa-solid fa-address-card"></i></button>
+				</div>
+			</div>
 
+			<!-- Second cell-->
+			<!-- Confirmed bar -->
+			<div class="col-3 d-none" id="yesno" style="font-size:50px">
+				<button id="yes" style="margin-right: 50px;"><i class="fa-solid fa-check" ></i></button>
+				<button id="no"                             ><i  class="fa-solid fa-x"     ></i></button>
+			</div>
+
+			<!-- Third cell -->
+			<!-- Github dev contact label -->
+			<div class="col-3 d-none" id="about_contact">
+				<a href="https://github.com/alanuwa/cits3403-project/tree/master">
+					<i id='github' class="fa-brands fa-github" style="font-size:60px;color:grey"></i>
+				</a>
+			</div>
+
+			<!-- Fourth cell -->
+			<!-- Light and dark mode -->
+			<div class="col-2 d-none" id="setting_detail">
+				<button id="setting_button" style="font-size:50px">
+					<i class="fa-solid fa-moon"  style="margin-right: 30px;"></i>
+					<i class="fa-regular fa-sun"></i>
+				</button>
+			</div>
+		</div>
 	</div>
-	
 </body>
-</html>
+</html> 

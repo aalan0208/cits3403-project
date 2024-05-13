@@ -1,50 +1,49 @@
-<style>
-		body{
-			background-color: #ECECEC;
-		}
+body{
+	background-color: #E2EAF4;
+}
 
-		.container{
-			background-color: #FFFFFF;
-			border-radius: 25px;
-			border-style: solid;
-			border-width: 2px;
-			padding: 5px;
-		}
+.dark-background {
+    background-color: #9E9B9B; /* or any other dark color you prefer */
+}
 
-		#account:hover{
-			background-color: #CECECE;
-			border-radius: 25px;
-		}
+/**
+ * 2 rows in the container
+ * */
+#panel,#sub_panel{
+	margin-bottom: 10px;
+	padding:10px;
+	background-color: white;
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 25px;
+}
 
-		#accountInfo{
-			display:flex;
-			flex-direction: column;
-		}
+button,.search_input{
+	background-color: white;
+	border-style: outset;
+	border-radius: 25px;
+}
 
-		.search_input{
-			width: 60%;
-			border-style: outset;
-			border-width: 2px;
-			border-radius: 25px;
-			padding:5px;
-		}
+.search_input{
+	width: 70%;
+}
 
-		.search_button:hover,
-		.search_input:hover{
-			background-color: #CECECE;
-		}
+#account:hover,
+button:hover{
+	border-style: inset;
+	border-radius: 25px;
+	background-color: lightgray;
+	border-width: 1px;
+}
 
-		button{
-			border-style: solid;
-			background-color: #FFFFFF;
-			border-radius: 25px;
-			border-width: 2px;
-			margin: 3px;
-			padding: 3px;
-		}
+#my_account,#setting,#logout,#about{
+	margin-bottom: 5px;
+	width:100%;
+}
 
-		button:hover{
-			background-color: #43B018;
-			border-style: none;
-		}
-	</style>
+#yesno,#about_contact,#setting_detail{
+	display:flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+}
