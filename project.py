@@ -76,7 +76,7 @@ def homepage():
     user_id = session['user_id']
     user = User.query.get(user_id)
     quizzes = user.quizzes
-    return render_template('homepage.html', quizzes=quizzes)
+    return render_template('main.html', quizzes=quizzes)
 
 # Search route
 @app.route('/search', methods=['GET', 'POST'])
