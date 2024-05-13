@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Question</title>
+</head>
+<body>
+    <h1>Create a Question</h1>
+    <label for="question">Question:</label>
+    <input type="text" id="question" name="question">
+    <br>
+    <label for="correctAnswer">Correct Answer:</label>
+    <input type="text" id="correctAnswer" name="correctAnswer">
+    <br>
+    <label for="wrongAnswer1">Wrong Answer 1:</label>
+    <input type="text" id="wrongAnswer1" name="wrongAnswer1">
+    <br>
+    <label for="wrongAnswer2">Wrong Answer 2:</label>
+    <input type="text" id="wrongAnswer2" name="wrongAnswer2">
+    <br>
+    <label for="wrongAnswer3">Wrong Answer 3:</label>
+    <input type="text" id="wrongAnswer3" name="wrongAnswer3">
+    <br>
+    <button onclick="sendQuestion()">Submit</button>
+
+    <script>
+        function sendQuestion() {
+            var question = document.getElementById("question").value;
+            var correctAnswer = document.getElementById("correctAnswer").value;
+            var wrongAnswer1 = document.getElementById("wrongAnswer1").value;
+            var wrongAnswer2 = document.getElementById("wrongAnswer2").value;
+            var wrongAnswer3 = document.getElementById("wrongAnswer3").value;
+
+            // Send the question data back to the main window
+            window.opener.postMessage({
+                question: question,
+                correctAnswer: correctAnswer,
+                wrongAnswers: [wrongAnswer1, wrongAnswer2, wrongAnswer3]
+            }, "*");
+            window.close();
+        }
+    </script>
+</body>
+</html>
