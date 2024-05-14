@@ -1,6 +1,6 @@
 .body{
 	/* Set the background image */
-    background-image: url("../pictures/SignInBackground.jpg");
+    background-image: url("pictures/SignInBackground.jpg");
     /* Center and scale the background image */
     background-position: center;
     background-size: cover;
