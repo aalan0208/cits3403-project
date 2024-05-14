@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Bootstrap file-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--CSS file-->
+    <link href="createQuiz.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/outer_quiz.css">
+
+    <!-- JQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+	<!-- Icon lib -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<!-- JavaScript -->
+	<script src="static/outer_quiz.js"></script>
+
+    <title>createQuiz</title>
+</head>
+<body>
+    <div class="container">
+		<!-- First row -->
+		<div class="row text-center fixed-div" id="panel">
+			<!-- First cell -->
+			<!-- Label -->
+			<div class="col-12">
+				<a href="#"><img src="pictures/Logo.jpg" alt="Logo"></a>
+			</div>
+
+			<!-- Second cell -->
+			<!-- Account-->
+			<div class="col-4">
+				<h3 id="account"><i class="fa-solid fa-file-invoice"></i> Account</h3>
+			</div>
+
+			<!-- Third cell -->
+			<!-- Search button and search bar-->
+			<div class="col-8">
+				<form action="/search" method="GET">
+					<button class="search_button" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search:</button>
+					<input  class="search_input"  type="text" name="q" placeholder="Search...">
+				</form>
+			</div>
+		</div>
+
+		<!-- Second row-->
+		<div class="row d-none" id="sub_panel">
+			<!-- First cell-->
+			<!-- Account info-->
+			<div class="col-4">
+				<div id="accountInfo" class="d-none">
+					<button id="my_account"	>My Account 	<i class="fas fa-user"></i></button>
+					<br>
+					<button id="setting" 	>Settings 		<i class="fa-solid fa-bars"></i></button>
+					<br>
+					<button id="logout"  	>Logout 		<i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+					<br>
+					<button id="about"   	>About 			<i class="fa-solid fa-address-card"></i></button>
+				</div>
+			</div>
+
+			<!-- Second cell-->
+			<!-- Confirmed bar -->
+			<div class="col-3 d-none" id="yesno" style="font-size:50px">
+				<button id="yes" style="margin-right: 50px;"><i class="fa-solid fa-check" ></i></button>
+				<button id="no"                             ><i  class="fa-solid fa-x"     ></i></button>
+			</div>
+
+			<!-- Third cell -->
+			<!-- Github dev contact label -->
+			<div class="col-3 d-none" id="about_contact">
+				<a href="https://github.com/alanuwa/cits3403-project/tree/master">
+					<i id='github' class="fa-brands fa-github" style="font-size:60px;color:grey"></i>
+				</a>
+			</div>
+
+			<!-- Fourth cell -->
+			<!-- Light and dark mode -->
+			<div class="col-2 d-none" id="setting_detail">
+				<button id="setting_button" style="font-size:50px">
+					<i class="fa-solid fa-moon"  style="margin-right: 30px;"></i>
+					<i class="fa-regular fa-sun"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+    
+    <div class="container">
+        <form>
+            <!-- Title input -->
+            <div class="mb-3">
+                <label for="quizTitle" class="form-label">Quiz Title:</label>
+                <input type="text" class="form-control" id="quizTitle" placeholder="Enter your quiz title" required>
+            </div>
+
+            <!-- Subject and Grade selection -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="subject" class="form-label">Subject:</label>
+                    <select name="subject" id="subject" class="form-select" required>
+                        <option value="">Select a subject</option>
+                        <!-- Options here -->
+                        <option value="maths">Maths</option>
+                        <option value="physics">Physics</option>
+                        <option value="chemistry">Chemistry</option>
+                        <option value="biology">Biology</option>
+                        <option value="humanbiology">Human Biology</option>
+                        <option value="english">English</option>
+                        <option value="history">History</option>
+                        <option value="politics">Politics</option>
+                        <option value="sport">Sport</option>
+                        <option value="languages">Languages</option>
+                        <option value="art">Art</option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label for="grade" class="form-label">Grade:</label>
+                    <select name="grade" id="grade" class="form-select" required>
+                        <option value="">Select a grade</option>
+                        <option value="year 1">Year 1</option>
+                        <option value="year 2">Year 2</option>
+                        <option value="year 3">Year 3</option>
+                        <option value="year 4">Year 4</option>
+                        <option value="year 5">Year 5</option>
+                        <option value="year 6">Year 6</option>
+                        <option value="year 7">Year 7</option>
+                        <option value="year 8">Year 8</option>
+                        <option value="year 9">Year 9</option>
+                        <option value="year 10">Year 10</option>
+                        <option value="year 11">Year 11</option>
+                        <option value="year 123">Year 12</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <div class="row mt-3">
+                <div class="col">
+                    <input type="button" class="btn btn-primary" value="Submit" onclick="submitForm()">
+                </div>
+            </div>
+        </form>
+
+        <!-- Container for the question list and "Create a Question" button -->
+        <div class="row mt-3">
+            <div class="col">
+                <h2>Quiz Title: <span id="displayQuizTitle"></span></h2>
+                <ul id="questionList"></ul> <!-- List to display questions -->
+                <!-- Add onclick event to trigger pop-up -->
+                <button type="button" class="btn btn-primary" onclick="openCreateQuestionPopup()">Create a Question</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 p-3">
+        <button type="button" class="btn btn-primary" onclick="saveQuiz()">Save</button>
+    </div>
+
+
+<!-- JavaScript code -->
+<script>
+    
+    function submitForm() {
+        //can add this form into database --> need to add logic here
+        var quizTitle = document.getElementById("quizTitle").value;
+        document.getElementById("displayQuizTitle").textContent = quizTitle;
+        console.log("Form submitted");
+    }
+
+    var questions = []; // Array to store questions
+    function openCreateQuestionPopup() {
+        // Calculate the position for centering the pop-up window
+        var width = 600;
+        var height = 400;
+        var left = (window.innerWidth / 2) - (width / 2);
+        var top = (window.innerHeight / 2) - (height / 2);
+
+        // Open a new window for creating a question
+        var createQuestionPopup = window.open("createQuestion.html", "CreateQuestionPopup", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
+
+        // Listen for message from the popup window
+        window.addEventListener("message", function(event) {
+            // Add the question to the array only if it doesn't already exist
+            var question = event.data;
+            if (!questions.some(q => q.question === question.question)) {
+                questions.push(question);
+                updateQuestionList();
+            }
+        });
+    }
+
+    function updateQuestionList() {
+        var questionList = document.getElementById("questionList");
+        questionList.innerHTML = ''; // Clear existing questions
+
+        // Loop through questions and add them to the list
+        questions.forEach(function(question) {
+            var listItem = document.createElement("li");
+
+            // Create a div to hold the question
+            var questionDiv = document.createElement("div");
+            questionDiv.textContent = "Question: " + question.question;
+            listItem.appendChild(questionDiv);
+
+            // Create a ul element to hold the answers
+            var answerList = document.createElement("ul");
+
+            // Add correct answer
+            var correctAnswerItem = document.createElement("li");
+            correctAnswerItem.textContent = "Correct Answer: " + question.correctAnswer;
+            answerList.appendChild(correctAnswerItem);
+
+            // Add wrong answers
+            question.wrongAnswers.forEach(function(wrongAnswer) {
+                var wrongAnswerItem = document.createElement("li");
+                wrongAnswerItem.textContent = "Wrong Answer: " + wrongAnswer;
+                answerList.appendChild(wrongAnswerItem);
+            });
+
+            // Append answer list to the list item
+            listItem.appendChild(answerList);
+
+            // Append list item to the question list
+            questionList.appendChild(listItem);
+        });
+    }
+
+    function saveQuiz() {
+
+        // Redirect back to the main page with the saved quiz title as a query parameter
+        window.location.href = "main.html?quizTitle=" + encodeURIComponent(quizTitle);
+    }
+    
+</script>
+</body>
+</html>
+
