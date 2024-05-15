@@ -12,13 +12,13 @@ db = SQLAlchemy(app)
 # User model
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-
+    db.UniqueConstraint('email')
 # Quiz model
 class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(100), nullable=False, index=True)
     grade = db.Column(db.String(10), nullable=False)
     subject = db.Column(db.String(50), nullable=False)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -39,44 +39,91 @@ class Result(db.Model):
     quiz_id = db.Column(db.Integer, nullable=False)
     score = db.Column(db.Integer, nullable=False)
     time_taken = db.Column(db.Integer, nullable=False)
+    db.ForeignKeyConstraint(['user_id'], ['user.id'])
+    db.ForeignKeyConstraint(['quiz_id'], ['quiz.id'])
 
+try:
+    with db.session.begin_nested():
+        db.session.add(new_user)
+        db.session.commit()
+except IntegrityError:
+    db.session.rollback()
+
+# Login route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+
+        if user and user.password == password:
+            session['user_id'] = user.id
+            flash('Logged in successfully!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid email or password. Please try again.', 'error')
+    return render_template('login.html')
 # Signup route
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         email = request.form['email']
+        confirm_email = request.form['confirm_email']  # Add confirm email field
         password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        # Check if emails match
+        if email != confirm_email:
+            flash('Emails do not match. Please try again.', 'error')
+            return redirect(url_for('signup'))
+
+            # Check if passwords match
+        if password != confirm_password:
+            flash('Passwords do not match. Please try again.', 'error')
+            return redirect(url_for('signup'))
+
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            # Redirect to login page with a message
             flash('Email already exists! Please log in.', 'error')
             return redirect(url_for('login'))
+
         try:
+            # Create a new user
             new_user = User(email=email, password=password)
             db.session.add(new_user)
             db.session.commit()
-            flash('Account created successfully!', 'success')
+            flash('Account created successfully! Please log in.', 'success')
             return redirect(url_for('login'))
         except IntegrityError:
             db.session.rollback()
             flash('An error occurred. Please try again.', 'error')
-    return render_template('signup.html')
+            return redirect(url_for('signup'))
+
+        return render_template('signup.html')
+
+# Dashboard route (serves as homepage as well)
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+        quizzes = user.quizzes
+        return render_template('dashboard.html', user=user, quizzes=quizzes)
+    else:
+        flash('You are not logged in. Please log in to access the dashboard.', 'error')
+        return redirect(url_for('login'))
 
 # Logout route
 @app.route('/logout')
 def logout():
-    session.clear()
+    session.pop('user_id', None)
+    flash('You have been logged out.', 'success')
     return redirect(url_for('login'))
 
 # Homepage route
 @app.route('/homepage')
 def homepage():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-    user_id = session['user_id']
-    user = User.query.get(user_id)
-    quizzes = user.quizzes
-    return render_template('main.html', quizzes=quizzes)
+    return redirect(url_for('dashboard'))
 
 # Search route
 @app.route('/search', methods=['GET', 'POST'])
