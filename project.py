@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask import render_template
 import random
 import time
 from sqlalchemy.exc import IntegrityError
@@ -102,13 +103,13 @@ def signup():
 
         return render_template('signup.html')
 
-# Dashboard route (serves as homepage as well)
+# Main route (serves as homepage as well)
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' in session:
         user = User.query.get(session['user_id'])
         quizzes = user.quizzes
-        return render_template('dashboard.html', user=user, quizzes=quizzes)
+        return render_template('main.html', user=user, quizzes=quizzes)
     else:
         flash('You are not logged in. Please log in to access the dashboard.', 'error')
         return redirect(url_for('login'))
@@ -157,7 +158,7 @@ def add_quiz():
             db.session.add(question)
         db.session.commit()
         return redirect(url_for('homepage'))
-    return render_template('add_quiz.html')
+    return render_template('createQuiz.html')
 
 # Quiz entry route
 @app.route('/quiz_entry/<int:quiz_id>', methods=['GET', 'POST'])
