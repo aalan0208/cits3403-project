@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask import render_template
 import random
 import time
 from sqlalchemy.exc import IntegrityError
