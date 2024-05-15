@@ -49,17 +49,10 @@ class Result(db.Model):
 # Login route
 @app.route("/login", methods=["GET", "POST"])
 def login():
-<<<<<<< HEAD
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
         user = User.query.filter_by(email=email).first()
-=======
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        User = User.query.filter_by(email=email).first()
->>>>>>> 234c3227a28e40cb9969c840c16db98df7cb6855
 
         if user and user.password == password:
             session["user_id"] = user.id
@@ -105,23 +98,14 @@ def signup():
 
     return render_template("signup.html")
 
-<<<<<<< HEAD
 
 # Dashboard route
 @app.route("/dashboard")
-=======
-# Main route (serves as homepage as well)
-@app.route('/dashboard')
->>>>>>> 234c3227a28e40cb9969c840c16db98df7cb6855
 def dashboard():
     if "user_id" in session:
         user = User.query.get(session["user_id"])
         quizzes = user.quizzes
-<<<<<<< HEAD
         return render_template("dashboard.html", user=user, quizzes=quizzes)
-=======
-        return render_template('main.html', user=user, quizzes=quizzes)
->>>>>>> 234c3227a28e40cb9969c840c16db98df7cb6855
     else:
         flash("You are not logged in. Please log in to access the dashboard.", "error")
         return redirect(url_for("login"))
@@ -182,14 +166,9 @@ def add_quiz():
             )
             db.session.add(question)
         db.session.commit()
-<<<<<<< HEAD
         return redirect(url_for("homepage"))
     return render_template("add_quiz.html")
 
-=======
-        return redirect(url_for('homepage'))
-    return render_template('createQuiz.html')
->>>>>>> 234c3227a28e40cb9969c840c16db98df7cb6855
 
 # Quiz entry route
 @app.route("/quiz_entry/<int:quiz_id>", methods=["GET", "POST"])
