@@ -32,8 +32,8 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_text = db.Column(db.String(255), nullable=False)
     correct_answer = db.Column(db.String(100), nullable=False)
-    quiz_id = db.Column(db.Integer, db.ForeignKey("quiz.id"), nullable=False)
-    quiz = db.relationship("Quiz", backref=db.backref("questions", lazy=True))
+    Quiz_id = db.Column(db.Integer, db.ForeignKey("Quiz.id"), nullable=False)
+    Quiz = db.relationship("Quiz", backref=db.backref("questions", lazy=True))
 
 
 # Result model
