@@ -55,7 +55,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        User = User.query.filter_by(email=email).first()
 
         if user and user.password == password:
             session['user_id'] = user.id
