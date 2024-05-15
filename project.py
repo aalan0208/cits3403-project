@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_sqlalchemy import SQLAlchemy
 import random
 import time
-from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Change this to a secure secret key
