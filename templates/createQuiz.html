@@ -230,8 +230,13 @@
 
     function saveQuiz() {
 
+        var quizTitle = document.getElementById("quizTitle").value;
         // Redirect back to the main page with the saved quiz title as a query parameter
         window.location.href = "main.html?quizTitle=" + encodeURIComponent(quizTitle);
+
+        
+
+
     }
     
 </script>
