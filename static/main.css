@@ -2,8 +2,8 @@
 .box {
     width: 150px;
     height: 150px;
-    background-color: #f0f0f0;
-    border: 2px solid #ccc;
+    background-color: #ffffff;
+    border: 2px solid #ffffff;
     border-radius: 5px;
     position: relative;
 }
