@@ -1,18 +1,9 @@
-.body1{
+.body{
 	/* Set the background image */
     background-image: url("pictures/SignInBackground.jpg");
     /* Center and scale the background image */
     background-position: center;
     background-size: cover;
-}
-
-.body2{
-	/* Set the background image */
-    background-image: url("pictures/Education.jpg");
-    /* Center and scale the background image */
-    background-position: center;
-    background-size: cover;
-
 }
 
 #myDiv1{
@@ -35,7 +26,7 @@
 
 #myDiv2{
 	max-height: 80%;
-	max-width: 60%;
+	max-width: 50%;
 	border-style: outset;
 	border-color: gray;
 	border-width: 5px;
@@ -53,7 +44,7 @@
 
 #myDiv3{
 	max-width: 60%;
-	max-height: 50%;
+	max-height: 60%;
 	border-style: solid;
 	border-color: black;
 	border-width: 5px;
@@ -102,7 +93,8 @@ input{
 	border-style: solid;
 	border-color:lightgray;
 	margin:5px;
-	width:100%;
+	width:60%;
+	text-align: center;
 }
 
 label{
@@ -110,5 +102,8 @@ label{
 }
 
 form{
+	display:flex;
 	text-align: center;
+	flex-direction: column;
+	align-items: center;
 }
