@@ -15,7 +15,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
     __tablename__ = "User"  # Explicitly specify the table name
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(1), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
 
@@ -24,7 +24,7 @@ class Quiz(db.Model):
     __tablename__ = "Quiz"  # Explicitly specify the table name
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False, index=True)
-    grade = db.Column(db.String(10), nullable=False)
+    grade = db.Column(db.String(100), nullable=False)
     subject = db.Column(db.String(50), nullable=False)
     creator_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
     creator = db.relationship("User", backref=db.backref("quizzes", lazy=True))
@@ -77,7 +77,7 @@ def login():
 # Signup route
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    if request.method == ["POST"]:
+    if request.method == "POST":
         email = request.form["email"]
         confirm_email = request.form["confirm_email"]
         password = request.form["password"]
@@ -152,7 +152,7 @@ def search():
 
 
 # Add quiz route
-@app.route("/add_quiz", methods=["GET", "POST"])
+@app.route("/createQuiz.html", methods=["GET", "POST"])
 def add_quiz():
     if request.method == ["POST"]:
         title = request.form["title"]
@@ -163,7 +163,7 @@ def add_quiz():
         correct_answers = request.form.getlist("correct_answer")
         if len(questions) != len(answers) or len(answers) != len(correct_answers):
             return render_template(
-                "add_quiz.html",
+                "createQuize.html",
                 message="Number of questions, answers, and correct answers should match",
             )
         user_id = session["user_id"]
@@ -179,7 +179,7 @@ def add_quiz():
             db.session.add(question)
         db.session.commit()
         return redirect(url_for("homepage"))
-    return render_template("add_quiz.html")
+    return render_template("createQuiz.html")
 
 
 # Quiz entry route
