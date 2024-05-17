@@ -55,7 +55,7 @@ def setup_database():
         db.create_all()
 if __name__ == "__main__":
     setup_database()
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
 
 # Login route
 @app.route("/login", methods=["GET", "POST"])
