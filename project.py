@@ -15,7 +15,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
     __tablename__ = "User"  # Explicitly specify the table name
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(1), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
 
