@@ -66,7 +66,7 @@ def login():
         if user and user.password == password:
             session["user_id"] = user.id
             flash("Logged in successfully!", "success")
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("homepage"))
         else:
             flash("Invalid email or password. Please try again.", "error")
     return render_template("login.html")
@@ -75,7 +75,7 @@ def login():
 # Signup route
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    if request.method == ["POST"]:
+    if request.method == "POST":
         email = request.form["email"]
         confirm_email = request.form["confirm_email"]
         password = request.form["password"]
