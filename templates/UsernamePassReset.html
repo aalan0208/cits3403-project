@@ -15,23 +15,12 @@
 	<!-- Icon lib -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-	<script>
-		function validateForm() {
-			var email = document.getElementById("Email1").value;
-			var confirmEmail = document.getElementById("Email2").value;
-			if (email !== confirmEmail) {
-				alert("Email addresses do not match");
-				return false;
-			}
-			return true;
-		}
-	</script>
 </head>
 <body class="body">
 	<div class="container" id="myDiv3">
 		<div class="row" style="text-align:center">
 			<div class="col-lg-12">
-				<a href="Login.html"><img src="../static/pictures/Logo.jpg" alt="Logo"></a>
+				<a href="/Login"><img src="../static/pictures/Logo.jpg" alt="Logo"></a>
 			</div>
 		</div>
 
@@ -44,12 +33,12 @@
 
 		<div class="row">
 			<div class="col-12">
-				<form onsubmit="return validateForm()" style="text-align:center">
+				<form style="text-align:center" action="/reset_pass" method="POST">
 					<label for="Email1"><b>Enter your email address:</b></label>
-					<input type="email" id="Email1" name="Email1" required>
+					<input type="email" id="Email1" name="email" required>
 					
 					<label for="Email2"><b>Confirm your email address:</b></label>
-					<input type="email" id="Email2" name="Email2" required>
+					<input type="email" id="Email2" name="confirm_email" required>
 
 					<div style="margin-top:20px;text-align:center">
 						<button type='reset'>Reset</button> 

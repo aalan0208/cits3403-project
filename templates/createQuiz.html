@@ -17,6 +17,7 @@
 
 	<!-- JavaScript -->
 	<script src="../static/quiz_page.js"></script>
+    <script src="../static/middle.js"></script>
 
     <title>createQuiz</title>
 </head>
@@ -136,6 +137,11 @@
                 </div>
             </div>
 
+            <div class="mb-3">
+                <label for="time" class="form-label">Select Time Limit (minutes)</label>
+                <input type="number" class="form-control" id="time" name="time" required min="1" placeholder="Enter time limit in minutes">
+            </div>
+
             <!-- Submit button -->
             <div class="row mt-3">
                 <div class="col">
@@ -179,7 +185,7 @@
         var top = (window.innerHeight / 2) - (height / 2);
 
         // Open a new window for creating a question
-        var createQuestionPopup = window.open("createQuestion.html", "CreateQuestionPopup", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
+        var createQuestionPopup = window.open("/createQuestion", "CreateQuestionPopup", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
 
         // Listen for message from the popup window
         window.addEventListener("message", function(event) {
