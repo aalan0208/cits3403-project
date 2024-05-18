@@ -300,7 +300,7 @@ def add_quiz():
             )
             db.session.add(question)
         db.session.commit()
-        return redirect(url_for("homepage"))
+        return redirect(url_for("dashboard"))
     return render_template("createQuiz.html")
 
 
