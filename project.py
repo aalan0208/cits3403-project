@@ -53,9 +53,11 @@ class Result(db.Model):
 def setup_database():
     with app.app_context():
         db.create_all()
-if __name__ == "__main__":
-    setup_database()
-    app.run(debug=True, port=5001)
+
+# Root route redirecting to login
+@app.route("/")
+def root():
+    return redirect(url_for("login"))
 
 # Login route
 @app.route("/login", methods=["GET", "POST"])
@@ -110,6 +112,22 @@ def signup():
 
     return render_template("signup.html")
 
+@app.route("/reset_pass", methods=["GET", "POST"])
+def reset_pass():
+    if request.method == "POST":
+        email = request.form["email"]
+        user = User.query.filter_by(email=email).first()
+        
+        if user:
+            new_password = generate_password_hash("new_password", method='sha256')
+            user.password = new_password
+            db.session.commit()
+            flash("Password reset successfully. Please check your email.", "success")
+        else:
+            flash("Email not found. Please try again.", "error")
+        return redirect(url_for("login"))
+
+    return render_template("UsernamePassReset.html")
 
 # Dashboard route
 @app.route("/dashboard")
