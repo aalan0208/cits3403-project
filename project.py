@@ -268,6 +268,11 @@ def search():
         return render_template("search.html", quizzes=quizzes)
     return render_template("search.html")
 
+@app.route("/main", methods =["GET","POST"])
+def return_to_main():
+    return render_template("main.html")
+
+
 
 @app.route("/createQuiz", methods=["GET", "POST"])
 def add_quiz():
@@ -363,6 +368,8 @@ def result():
         )
 
     return render_template("result.html", message="Quiz submitted successfully.")
+
+
 
 
 if __name__ == "__main__":
