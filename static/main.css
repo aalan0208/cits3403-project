@@ -32,4 +32,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
+    padding: 20px
+}
+
+.quiz-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
