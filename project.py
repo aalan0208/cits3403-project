@@ -299,6 +299,11 @@ def add_quiz():
     return render_template("createQuiz.html")
 
 
+@app.route("/createQuestion", methods=["GET", "POST"])
+def create_question():
+    return render_template("createQuestion.html")
+
+
 @app.route("/quiz_entry/<int:quiz_id>", methods=["GET", "POST"])
 def quiz_entry(quiz_id):
     quiz = Quiz.query.get(quiz_id)
