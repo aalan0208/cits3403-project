@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 import random
 import time
+import secrets
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -41,7 +42,10 @@ class Quiz(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
     creator = db.relationship("User", backref=db.backref("quizzes", lazy=True))
 
-
+def setup_database():
+    with app.app_context():
+        db.create_all()
+        
 # Question model
 class Question(db.Model):
     __tablename__ = "Question"  # Explicitly specify the table name
@@ -62,9 +66,7 @@ class Result(db.Model):
     time_taken = db.Column(db.Integer, nullable=False)
 
 
-def setup_database():
-    with app.app_context():
-        db.create_all()
+
 
 # Root route redirecting to login
 @app.route("/")
@@ -115,7 +117,7 @@ def signup():
             return redirect(url_for("login"))
 
         try:
-            hashed_password = generate_password_hash(password, method='sha256')
+            hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
             verification_token = secrets.token_urlsafe(16)
             new_user = User(email=email, password=hashed_password, verification_token=verification_token)
             db.session.add(new_user)
@@ -190,7 +192,7 @@ def reset_password_token(token):
             flash("Passwords do not match. Please try again.", "error")
             return redirect(url_for("reset_password_token", token=token))
 
-        user.password = generate_password_hash(password, method='sha256')
+        user.password = generate_password_hash(password, method='pbkdf2:sha256')
         user.reset_token = None
         db.session.commit()
         flash("Password reset successfully. Please log in.", "success")
