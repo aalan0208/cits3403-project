@@ -71,7 +71,7 @@ def login():
             return redirect(url_for("homepage"))
         else:
             flash("Invalid email or password. Please try again.", "error")
-    return render_template("login.html")
+    return render_template("Login.html")
 
 
 # Signup route
