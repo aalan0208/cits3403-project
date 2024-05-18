@@ -182,6 +182,12 @@ def verify_email(token):
 def reset_pass():
     if request.method == "POST":
         email = request.form["email"]
+        confirm_email = request.form["confirm_email"]
+
+        if email != confirm_email:
+            flash("Email addresses do not match. Please try again.", "error")
+            return redirect(url_for("reset_pass"))
+
         user = User.query.filter_by(email=email).first()
 
         if user:
@@ -221,11 +227,6 @@ def reset_password_token(token):
 
     if request.method == "POST":
         password = request.form["password"]
-        confirm_password = request.form["confirm_password"]
-
-        if password != confirm_password:
-            flash("Passwords do not match. Please try again.", "error")
-            return redirect(url_for("reset_password_token", token=token))
 
         user.password = generate_password_hash(password, method="pbkdf2:sha256")
         user.reset_token = None
