@@ -77,8 +77,8 @@ def root():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form["Email"]
-        password = request.form["Pass"]
+        email = request.form["email"]
+        password = request.form["password"]
         user = User.query.filter_by(email=email).first()
 
         if user:
@@ -269,7 +269,7 @@ def search():
     return render_template("search.html")
 
 
-@app.route("/createQuiz.html", methods=["GET", "POST"])
+@app.route("/createQuiz", methods=["GET", "POST"])
 def add_quiz():
     if request.method == "POST":
         title = request.form["title"]

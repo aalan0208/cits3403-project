@@ -94,41 +94,12 @@
           <div class="box" id = "addquiz">
             <!-- Plus button inside the box -->
             <div class="plus-button" onclick = "createQuizPage()">
-              <span class="plus-icon">+</span>
+              <a href="/createQuiz" alt="Plus icon"><span class="plus-icon">+</span></a>            
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <script>
-    	function createQuizPage() {
-    		window.location.href = "createQuiz.html"
-		
-		function getQueryParam(param) {
-			const urlParams = new URLSearchParams(window.location.search);
-			return urlParams.get(param);
-		}
-	
-		// Function to create a box with the quiz title
-		function createQuizBox() {
-			var quizTitle = getQueryParam("quizTitle");
-			if (quizTitle) {
-				var container = document.getElementById("addquiz");
-				var newBox = document.createElement("div");
-				newBox.className = "box";
-				newBox.textContent = quizTitle;
-				container.appendChild(newBox);
-			}
-		}
-	
-		// Call the function to create the box when the page loads
-		window.onload = createQuizBox;
-      }
-
-      
-    </script>
-        
 </body>
 </html>
 
