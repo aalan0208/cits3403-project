@@ -1,15 +1,24 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail, Message
 import random
 import time
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash, generate_password_hash
+
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Change this to a secure secret key(NEEDS TO BE DONE AT THE ENDDD)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///quizlet.db"  # SQLite database URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+# Mail configuration
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = "your_email@gmail.com"  # Replace with your email
+app.config["MAIL_PASSWORD"] = "your_email_password"  # Replace with your email password
+mail = Mail(app)
 
 # User model
 class User(db.Model):
@@ -17,6 +26,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    reset_token = db.Column(db.String(100), nullable=True)
+    verification_token = db.Column(db.String(100), nullable=True)
+    is_verified = db.Column(db.Boolean, default=False)
 
 
 # Quiz model
@@ -68,15 +80,19 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         if user and check_password_hash(user.password, password):
-            session["user_id"] = user.id
-            flash("Logged in successfully!", "success")
-            return redirect(url_for("homepage"))
+            if user.is_verified:
+                session["user_id"] = user.id
+                flash("Logged in successfully!", "success")
+                return redirect(url_for("homepage"))
+            else:
+                flash("Email not verified. Please check your email to verify your account.", "error")
+                return redirect(url_for("login"))
         else:
             flash("Invalid email or password. Please try again.", "error")
     return render_template("Login.html")
 
 
-# Signup route
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -100,10 +116,17 @@ def signup():
 
         try:
             hashed_password = generate_password_hash(password, method='sha256')
-            new_user = User(email=email, password=hashed_password)
+            verification_token = secrets.token_urlsafe(16)
+            new_user = User(email=email, password=hashed_password, verification_token=verification_token)
             db.session.add(new_user)
             db.session.commit()
-            flash("Account created successfully! Please log in.", "success")
+
+            verification_link = url_for("verify_email", token=verification_token, _external=True)
+            msg = Message("Email Verification", sender="your_email@gmail.com", recipients=[email])
+            msg.body = f"Please click the following link to verify your email: {verification_link}"
+            mail.send(msg)
+
+            flash("Account created successfully! Please check your email to verify your account.", "success")
             return redirect(url_for("login"))
         except IntegrityError:
             db.session.rollback()
@@ -112,22 +135,68 @@ def signup():
 
     return render_template("signup.html")
 
+@app.route("/verify_email/<token>")
+def verify_email(token):
+    user = User.query.filter_by(verification_token=token).first()
+    if user:
+        user.is_verified = True
+        user.verification_token = None
+        db.session.commit()
+        flash("Email verified successfully! You can now log in.", "success")
+        return redirect(url_for("login"))
+    else:
+        flash("Invalid or expired verification link.", "error")
+        return redirect(url_for("signup"))
+
+
+
 @app.route("/reset_pass", methods=["GET", "POST"])
 def reset_pass():
     if request.method == "POST":
+        # Extract user input 
+        # Filter the data base with the input and take the first one
         email = request.form["email"]
         user = User.query.filter_by(email=email).first()
-        
+
+        # If user exists
         if user:
-            new_password = generate_password_hash("new_password", method='sha256')
-            user.password = new_password
-            db.session.commit()
-            flash("Password reset successfully. Please check your email.", "success")
+            reset_token = secrets.token_urlsafe(16) # Generate token
+            user.reset_token = reset_token # Generate a token in the database 
+            db.session.commit() # Save
+
+            reset_link = url_for("reset_password_token", token=reset_token, _external=True) # Generate url using function with the reset token
+            msg = Message("Password Reset Request", sender="your_email@gmail.com", recipients=[email]) # To
+            msg.body = f"Please click the following link to reset your password: {reset_link}" # Link body
+            mail.send(msg) # Send
+            flash("Password reset link has been sent to your email.", "success") # Alert
         else:
-            flash("Email not found. Please try again.", "error")
+            flash("Email not found. Please try again.", "error") # Alert
         return redirect(url_for("login"))
 
     return render_template("UsernamePassReset.html")
+
+@app.route("/reset_password/<token>", methods=["GET", "POST"])
+def reset_password_token(token):
+    user = User.query.filter_by(reset_token=token).first()
+    if not user:
+        flash("Invalid or expired token.", "error")
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        password = request.form["password"]
+        confirm_password = request.form["confirm_password"]
+
+        if password != confirm_password:
+            flash("Passwords do not match. Please try again.", "error")
+            return redirect(url_for("reset_password_token", token=token))
+
+        user.password = generate_password_hash(password, method='sha256')
+        user.reset_token = None
+        db.session.commit()
+        flash("Password reset successfully. Please log in.", "success")
+        return redirect(url_for("login"))
+
+    return render_template("reset_pass.html", token=token)
 
 # Dashboard route
 @app.route("/dashboard")
