@@ -21,6 +21,7 @@ app.config["MAIL_USERNAME"] = "citsproject3403@gmail.com"  # Replace with your e
 app.config["MAIL_PASSWORD"] = "rlxh pqhp zsyo kmib"  # Replace with your email password
 mail = Mail(app)
 
+
 # User model
 class User(db.Model):
     __tablename__ = "User"
@@ -30,6 +31,7 @@ class User(db.Model):
     reset_token = db.Column(db.String(100), nullable=True)
     verification_token = db.Column(db.String(100), nullable=True)
     is_verified = db.Column(db.Boolean, default=False)
+
 
 # Quiz model
 class Quiz(db.Model):
@@ -41,6 +43,7 @@ class Quiz(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
     creator = db.relationship("User", backref=db.backref("quizzes", lazy=True))
 
+
 # Question model
 class Question(db.Model):
     __tablename__ = "Question"
@@ -49,6 +52,7 @@ class Question(db.Model):
     correct_answer = db.Column(db.String(100), nullable=False)
     quiz_id = db.Column(db.Integer, db.ForeignKey("Quiz.id"), nullable=False)
     quiz = db.relationship("Quiz", backref=db.backref("questions", lazy=True))
+
 
 # Result model
 class Result(db.Model):
@@ -59,32 +63,46 @@ class Result(db.Model):
     score = db.Column(db.Integer, nullable=False)
     time_taken = db.Column(db.Integer, nullable=False)
 
+
 def setup_database():
     with app.app_context():
         db.create_all()
+
 
 @app.route("/")
 def root():
     return redirect(url_for("login"))
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+        email = request.form["Email"]
+        password = request.form["Pass"]
         user = User.query.filter_by(email=email).first()
+
+        if user:
+            print(f"User found: {user.email}, Verified: {user.is_verified}")
+        else:
+            print("No user found with that email.")
 
         if user and check_password_hash(user.password, password):
             if user.is_verified:
                 session["user_id"] = user.id
                 flash("Logged in successfully!", "success")
+                print("Login successful, redirecting to dashboard...")
                 return redirect(url_for("dashboard"))
             else:
-                flash("Email not verified. Please check your email to verify your account.", "error")
-                return redirect(url_for("login"))
+                flash(
+                    "Email not verified. Please check your email to verify your account.",
+                    "error",
+                )
+                print("Email not verified.")
         else:
             flash("Invalid email or password. Please try again.", "error")
-    return render_template("Login.html")
+            print("Invalid login credentials.")
+    return render_template("login.html")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -108,22 +126,35 @@ def signup():
             return redirect(url_for("login"))
 
         try:
-            hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+            hashed_password = generate_password_hash(password, method="pbkdf2:sha256")
             verification_token = secrets.token_urlsafe(16)
-            new_user = User(email=email, password=hashed_password, verification_token=verification_token)
+            new_user = User(
+                email=email,
+                password=hashed_password,
+                verification_token=verification_token,
+            )
             db.session.add(new_user)
             db.session.commit()
 
             try:
-                verification_link = url_for("verify_email", token=verification_token, _external=True)
-                msg = Message("Email Verification", sender="citsproject3403@gmail.com", recipients=[email])
+                verification_link = url_for(
+                    "verify_email", token=verification_token, _external=True
+                )
+                msg = Message(
+                    "Email Verification",
+                    sender="citsproject3403@gmail.com",
+                    recipients=[email],
+                )
                 msg.body = f"Please click the following link to verify your email: {verification_link}"
                 mail.send(msg)
                 print("Verification email sent successfully")
             except Exception as e:
                 print(f"Failed to send verification email: {e}")
 
-            flash("Account created successfully! Please check your email to verify your account.", "success")
+            flash(
+                "Account created successfully! Please check your email to verify your account.",
+                "success",
+            )
             return redirect(url_for("login"))
         except IntegrityError:
             db.session.rollback()
@@ -131,6 +162,7 @@ def signup():
             return redirect(url_for("signup"))
 
     return render_template("signup.html")
+
 
 @app.route("/verify_email/<token>")
 def verify_email(token):
@@ -145,6 +177,7 @@ def verify_email(token):
         flash("Invalid or expired verification link.", "error")
         return redirect(url_for("signup"))
 
+
 @app.route("/reset_pass", methods=["GET", "POST"])
 def reset_pass():
     if request.method == "POST":
@@ -157,8 +190,14 @@ def reset_pass():
             db.session.commit()
 
             try:
-                reset_link = url_for("reset_password_token", token=reset_token, _external=True)
-                msg = Message("Password Reset Request", sender="citsproject3403@gmail.com", recipients=[email])
+                reset_link = url_for(
+                    "reset_password_token", token=reset_token, _external=True
+                )
+                msg = Message(
+                    "Password Reset Request",
+                    sender="citsproject3403@gmail.com",
+                    recipients=[email],
+                )
                 msg.body = f"Please click the following link to reset your password: {reset_link}"
                 mail.send(msg)
                 print("Password reset email sent successfully")
@@ -171,6 +210,7 @@ def reset_pass():
         return redirect(url_for("login"))
 
     return render_template("UsernamePassReset.html")
+
 
 @app.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_password_token(token):
@@ -187,13 +227,14 @@ def reset_password_token(token):
             flash("Passwords do not match. Please try again.", "error")
             return redirect(url_for("reset_password_token", token=token))
 
-        user.password = generate_password_hash(password, method='pbkdf2:sha256')
+        user.password = generate_password_hash(password, method="pbkdf2:sha256")
         user.reset_token = None
         db.session.commit()
         flash("Password reset successfully. Please log in.", "success")
         return redirect(url_for("login"))
 
     return render_template("reset_pass.html", token=token)
+
 
 @app.route("/dashboard")
 def dashboard():
@@ -203,13 +244,16 @@ def dashboard():
         return render_template("main.html", user=user, quizzes=quizzes)
     else:
         flash("You are not logged in. Please log in to access the dashboard.", "error")
+        print("User not logged in, redirecting to login.")
         return redirect(url_for("login"))
+
 
 @app.route("/logout")
 def logout():
     session.pop("user_id", None)
     flash("You have been logged out.", "success")
     return redirect(url_for("login"))
+
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
@@ -222,6 +266,7 @@ def search():
         ).all()
         return render_template("search.html", quizzes=quizzes)
     return render_template("search.html")
+
 
 @app.route("/createQuiz.html", methods=["GET", "POST"])
 def add_quiz():
@@ -252,6 +297,7 @@ def add_quiz():
         return redirect(url_for("homepage"))
     return render_template("createQuiz.html")
 
+
 @app.route("/quiz_entry/<int:quiz_id>", methods=["GET", "POST"])
 def quiz_entry(quiz_id):
     quiz = Quiz.query.get(quiz_id)
@@ -261,6 +307,7 @@ def quiz_entry(quiz_id):
         session["start_time"] = time.time()
         return redirect(url_for("quiz_page"))
     return render_template("quiz_entry.html", quiz=quiz)
+
 
 @app.route("/quiz_page", methods=["GET"])
 def quiz_page():
@@ -276,6 +323,7 @@ def quiz_page():
     return render_template(
         "quiz_page.html", quiz=quiz, questions=questions, time_limit=time_limit
     )
+
 
 @app.route("/result", methods=["GET", "POST"])
 def result():
@@ -310,7 +358,7 @@ def result():
 
     return render_template("result.html", message="Quiz submitted successfully.")
 
+
 if __name__ == "__main__":
     setup_database()
     app.run(debug=True)
-
