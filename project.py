@@ -3,9 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 import random
 import time
 from sqlalchemy.exc import IntegrityError
-
+from werkzeug.security import check_password_hash, generate_password_hash
 app = Flask(__name__)
-app.secret_key = "your_secret_key"  # Change this to a secure secret key
+app.secret_key = "your_secret_key"  # Change this to a secure secret key(NEEDS TO BE DONE AT THE ENDDD)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///quizlet.db"  # SQLite database URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
@@ -24,7 +24,7 @@ class Quiz(db.Model):
     __tablename__ = "Quiz"  # Explicitly specify the table name
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False, index=True)
-    grade = db.Column(db.String(10), nullable=False)
+    grade = db.Column(db.String(100), nullable=False)
     subject = db.Column(db.String(50), nullable=False)
     creator_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
     creator = db.relationship("User", backref=db.backref("quizzes", lazy=True))
@@ -53,7 +53,9 @@ class Result(db.Model):
 def setup_database():
     with app.app_context():
         db.create_all()
-
+if __name__ == "__main__":
+    setup_database()
+    app.run(debug=True, port=5001)
 
 # Login route
 @app.route("/login", methods=["GET", "POST"])
@@ -63,7 +65,7 @@ def login():
         password = request.form["password"]
         user = User.query.filter_by(email=email).first()
 
-        if user and user.password == password:
+        if user and check_password_hash(user.password, password):
             session["user_id"] = user.id
             flash("Logged in successfully!", "success")
             return redirect(url_for("homepage"))
@@ -95,7 +97,8 @@ def signup():
             return redirect(url_for("login"))
 
         try:
-            new_user = User(email=email, password=password)
+            hashed_password = generate_password_hash(password, method='sha256')
+            new_user = User(email=email, password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
             flash("Account created successfully! Please log in.", "success")
@@ -149,7 +152,7 @@ def search():
 
 
 # Add quiz route
-@app.route("/add_quiz", methods=["GET", "POST"])
+@app.route("/createQuiz.html", methods=["GET", "POST"])
 def add_quiz():
     if request.method == ["POST"]:
         title = request.form["title"]
@@ -160,7 +163,7 @@ def add_quiz():
         correct_answers = request.form.getlist("correct_answer")
         if len(questions) != len(answers) or len(answers) != len(correct_answers):
             return render_template(
-                "add_quiz.html",
+                "createQuize.html",
                 message="Number of questions, answers, and correct answers should match",
             )
         user_id = session["user_id"]
@@ -176,7 +179,7 @@ def add_quiz():
             db.session.add(question)
         db.session.commit()
         return redirect(url_for("homepage"))
-    return render_template("add_quiz.html")
+    return render_template("createQuiz.html")
 
 
 # Quiz entry route
