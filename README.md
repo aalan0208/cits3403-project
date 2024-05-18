@@ -1,6 +1,13 @@
-# cits3403-project
+# CITS3002 Project
+<ul>
+<li>Alan Lam 23625123 (alanuwa)
+<li>Tom Tran 23459091(TomTran11) 
+<li>Namgay Choden 23867057 (Nchoden) 
+<li>Zachary Ta 22972615
+</ul>
 
-Description:
+## Description:
+
 introductory page:
 username + password
 
@@ -44,9 +51,3 @@ right side of the page should be the score board of everyone wo have done the qu
 bottom right page have 'home' button that goes to home page
 
 
-| Student Number | Name | GitHub User|
-|:---:| :---: | :---: |
-| 23625123 | Alan Lam | alanuwa | 
-| 23459091 | Tom Tran | TomTran11|
-| 22972615 | Zachary Ta |       |
-| 23867057 | Namgay Choden | Nchoden |
