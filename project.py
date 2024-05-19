@@ -64,7 +64,6 @@ class Result(db.Model):
     score = db.Column(db.Integer, nullable=False)
     time_taken = db.Column(db.Integer, nullable=False)
 
-
 def setup_database():
     with app.app_context():
         db.create_all()
@@ -274,9 +273,14 @@ def return_to_main():
     return render_template("main.html")
 
 
+<<<<<<< HEAD
 
 @app.route("/createQuiz", methods=["GET", "POST"])
 def add_quiz():
+=======
+@app.route("/create_quiz", methods=["GET", "POST"])
+def create_quiz():
+>>>>>>> 33c0488 (Redo)
     if request.method == "POST":
         title = request.form["Title"]
         grade = request.form["Grade"]
@@ -290,11 +294,6 @@ def add_quiz():
 
         return redirect(url_for("dashboard"))
     return render_template("createQuiz.html")
-
-@app.route("/createQuestion", methods=["GET", "POST"])
-def create_question():
-    return render_template("createQuestion.html")
-
 
 @app.route("/quiz_entry/<int:quiz_id>", methods=["GET", "POST"])
 def quiz_entry(quiz_id):
