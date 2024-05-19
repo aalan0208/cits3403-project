@@ -139,7 +139,11 @@
                 <a href="/create_quiz" alt="Plus icon"><span class="plus-icon">+</span></a>
             </div>
         </div>
-        <div id="quizContainer"></div>
+        {% for quiz in quizzes %}
+        <div class="box"></div>
+            <div class="quiz-title text center">{{ quiz.title }}</div>
+        </div>
+        {% endfor %}
     </div>
 
     <script>
