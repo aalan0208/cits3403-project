@@ -32,17 +32,17 @@ class User(db.Model):
     reset_token = db.Column(db.String(100), nullable=True)
     verification_token = db.Column(db.String(100), nullable=True)
     is_verified = db.Column(db.Boolean, default=False)
-
+    quizzes = db.relationship('Quiz', backref='creator', lazy=True)
 
 # Quiz model
 class Quiz(db.Model):
     __tablename__ = "Quiz"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False, index=True)
+    title = db.Column(db.String(255), nullable=False)
     grade = db.Column(db.String(100), nullable=False)
-    subject = db.Column(db.String(50), nullable=False)
-    creator_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
-    creator = db.relationship("User", backref=db.backref("quizzes", lazy=True))
+    subject = db.Column(db.String(100), nullable=False)
+    time_limit = db.Column(db.Integer, nullable=False)  # Adding time_limit here
+    creator_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
 
 
 # Question model
@@ -274,35 +274,21 @@ def return_to_main():
     return render_template("main.html")
 
 
-@app.route("/createQuiz", methods=["GET", "POST"])
+@app.route("/create_quiz", methods=["GET", "POST"])
 def add_quiz():
     if request.method == "POST":
-        title = request.form["title"]
-        grade = request.form["grade"]
-        subject = request.form["subject"]
-        questions = request.form.getlist("question")
-        answers = request.form.getlist("answer")
-        correct_answers = request.form.getlist("correct_answer")
-        if len(questions) != len(answers) or len(answers) != len(correct_answers):
-            return render_template(
-                "createQuize.html",
-                message="Number of questions, answers, and correct answers should match",
-            )
+        title = request.form["Title"]
+        grade = request.form["Grade"]
+        subject = request.form["Subject"]
+        time_limit = request.form["Time"]
         user_id = session["user_id"]
-        quiz = Quiz(title=title, grade=grade, subject=subject, creator_id=user_id)
+
+        quiz = Quiz(title=title, grade=grade, subject=subject, time_limit=time_limit, creator_id=user_id)
         db.session.add(quiz)
         db.session.commit()
-        for i in range(len(questions)):
-            question = Question(
-                question_text=questions[i],
-                correct_answer=correct_answers[i],
-                quiz_id=quiz.id,
-            )
-            db.session.add(question)
-        db.session.commit()
+
         return redirect(url_for("dashboard"))
     return render_template("createQuiz.html")
-
 
 @app.route("/createQuestion", methods=["GET", "POST"])
 def create_question():
