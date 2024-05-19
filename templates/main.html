@@ -142,9 +142,8 @@
         {% for quiz in quizzes %}
         <div class="box">
             <!-- Added link to quiz page -->
-            <a href="/quiz_page/{{ quiz.id }}" class="quiz-link">
+            <a href="{{ url_for('quiz_entry', quiz_id=quiz.id) }}" class="quiz-title text center">{{ quiz.title }}</a>>
                 <div class="quiz-title text center">{{ quiz.title }}</div>
-            </a>
         </div>
         {% endfor %}
     </div>
