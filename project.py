@@ -13,8 +13,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///quizlet.db"  # SQLite databas
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+#only works with gmail !!!!!!
 # Mail configuration
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_SERVER"] = "smtp.gmail.com" 
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = "citsproject3403@gmail.com"  # Replace with your email
@@ -81,26 +82,25 @@ def login():
         password = request.form["password"]
         user = User.query.filter_by(email=email).first()
 
-        if user:
-            print(f"User found: {user.email}, Verified: {user.is_verified}")
-        else:
+        if not user:
+            # If no user is found, print the message and flash the error
             print("No user found with that email.")
-
-        if user and check_password_hash(user.password, password):
-            if user.is_verified:
-                session["user_id"] = user.id
-                flash("Logged in successfully!", "success")
-                print("Login successful, redirecting to dashboard...")
-                return redirect(url_for("dashboard"))
-            else:
-                flash(
-                    "Email not verified. Please check your email to verify your account.",
-                    "error",
-                )
-                print("Email not verified.")
+            flash("No user found with that email.", "error")
         else:
-            flash("Invalid email or password. Please try again.", "error")
-            print("Invalid login credentials.")
+            # If a user is found, proceed with password and verification checks
+            if check_password_hash(user.password, password):
+                if user.is_verified:
+                    session["user_id"] = user.id
+                    flash("Logged in successfully!", "success")
+                    return redirect(url_for("dashboard"))
+                else:
+                    flash(
+                        "Email not verified. Please check your email to verify your account.",
+                        "error",
+                    )
+            else:
+                flash("Invalid email or password. Please try again.", "error")
+
     return render_template("login.html")
 
 
@@ -268,10 +268,10 @@ def search():
         return render_template("search.html", quizzes=quizzes)
     return render_template("search.html")
 
-@app.route("/main", methods =["GET","POST"])
+
+@app.route("/main", methods=["GET", "POST"])
 def return_to_main():
     return render_template("main.html")
-
 
 
 @app.route("/createQuiz", methods=["GET", "POST"])
@@ -368,8 +368,6 @@ def result():
         )
 
     return render_template("result.html", message="Quiz submitted successfully.")
-
-
 
 
 if __name__ == "__main__":
