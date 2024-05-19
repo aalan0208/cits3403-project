@@ -13,9 +13,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///quizlet.db"  # SQLite databas
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-#only works with gmail !!!!!!
+# only works with gmail !!!!!!
 # Mail configuration
-app.config["MAIL_SERVER"] = "smtp.gmail.com" 
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = "citsproject3403@gmail.com"  # Replace with your email
@@ -32,7 +32,8 @@ class User(db.Model):
     reset_token = db.Column(db.String(100), nullable=True)
     verification_token = db.Column(db.String(100), nullable=True)
     is_verified = db.Column(db.Boolean, default=False)
-    quizzes = db.relationship('Quiz', backref='creator', lazy=True)
+    quizzes = db.relationship("Quiz", backref="creator", lazy=True)
+
 
 # Quiz model
 class Quiz(db.Model):
@@ -42,7 +43,7 @@ class Quiz(db.Model):
     grade = db.Column(db.String(100), nullable=False)
     subject = db.Column(db.String(100), nullable=False)
     time_limit = db.Column(db.Integer, nullable=False)  # Adding time_limit here
-    creator_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
 
 
 # Question model
@@ -274,9 +275,8 @@ def return_to_main():
     return render_template("main.html")
 
 
-
-@app.route("/createQuiz", methods=["GET", "POST"])
-def add_quiz():
+@app.route("/create_quiz", methods=["GET", "POST"])
+def create_quiz():
     if request.method == "POST":
         title = request.form["Title"]
         grade = request.form["Grade"]
@@ -284,16 +284,18 @@ def add_quiz():
         time_limit = request.form["Time"]
         user_id = session["user_id"]
 
-        quiz = Quiz(title=title, grade=grade, subject=subject, time_limit=time_limit, creator_id=user_id)
+        quiz = Quiz(
+            title=title,
+            grade=grade,
+            subject=subject,
+            time_limit=time_limit,
+            creator_id=user_id,
+        )
         db.session.add(quiz)
         db.session.commit()
 
         return redirect(url_for("dashboard"))
     return render_template("createQuiz.html")
-
-@app.route("/createQuestion", methods=["GET", "POST"])
-def create_question():
-    return render_template("createQuestion.html")
 
 
 @app.route("/quiz_entry/<int:quiz_id>", methods=["GET", "POST"])

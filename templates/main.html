@@ -142,17 +142,6 @@
         <div id="quizContainer"></div>
     </div>
 
-    <h2 class="text-center">Quizzes</h2>
-    <div class="grid-container">
-        <div class="box" id="addquiz">
-            <!-- Plus button inside the box -->
-            <div class="plus-button" onclick="createQuizPage()">
-                <a href="/createQuiz" alt="Plus icon"><span class="plus-icon">+</span></a>
-            </div>
-        </div>
-        <div id="quizContainer"></div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             var quizTitles = JSON.parse(localStorage.getItem('quizTitles')) || [];
