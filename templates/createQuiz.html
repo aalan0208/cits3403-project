@@ -6,8 +6,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- CSS file -->
-    <link href="../static/createQuiz.css" rel="stylesheet">
-    <link rel="stylesheet" href="../static/quiz_page.css">
+    <link href="{{ url_for('static', filename='createQuiz.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='quiz_page.css') }}">
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- JavaScript -->
-    <script src="../static/quiz_page.js"></script>
+    <script src="{{ url_for('static', filename='quiz_page.js') }}"></script>
 
     <title>Create Quiz</title>
 </head>
@@ -27,7 +27,7 @@
             <!-- First cell -->
             <!-- Label -->
             <div class="col-12">
-                <a href="#"><img src="../static/pictures/Logo.jpg" alt="Logo"></a>
+                <a href="#"><img src="{{ url_for('static', filename='pictures/Logo.jpg') }}" alt="Logo"></a>
             </div>
 
             <!-- Second cell -->
@@ -144,119 +144,25 @@
             <!-- Hidden input to store questions -->
             <input type="hidden" id="questionsData" name="questionsData">
 
-            <!-- Submit button -->
+            <!-- Container for the question list -->
             <div class="row mt-3">
                 <div class="col">
+                    <h2>Quiz Title: <span id="displayQuizTitle"></span></h2>
+                    <ul id="questionList"></ul> <!-- List to display questions -->
+                </div>
+            </div>
+
+            <!-- Button to open the modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createQuestionModal">
+                Create a Question
+            </button>
+            <!-- Submit button -->
+            <div class="col fixed-bottom-right">
+                <div class="btn btn-primary fixed-bottom-right">
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </div>
             </div>
         </form>
-
-        <!-- Button to open the modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createQuestionModal">
-            Create a Question
-        </button>
-
-        <!-- Container for the question list -->
-        <div class="row mt-3">
-            <div class="col">
-                <h2>Quiz Title: <span id="displayQuizTitle"></span></h2>
-                <ul id="questionList"></ul> <!-- List to display questions -->
-            </div>
-        </div>
-
-        <!-- Modal for creating a question -->
-        <div class="modal fade" id="createQuestionModal" tabindex="-1" aria-labelledby="createQuestionModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createQuestionModalLabel">Create Question</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="questionForm">
-                            <div class="mb-3">
-                                <label for="questionText" class="form-label">Question</label>
-                                <input type="text" class="form-control" id="questionText" name="questionText" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="answer1" class="form-label">Answer 1</label>
-                                <input type="text" class="form-control" id="answer1" name="answer1" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="answer2" class="form-label">Answer 2</label>
-                                <input type="text" class="form-control" id="answer2" name="answer2" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="answer3" class="form-label">Answer 3</label>
-                                <input type="text" class="form-control" id="answer3" name="answer3" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="answer4" class="form-label">Answer 4</label>
-                                <input type="text" class="form-control" id="answer4" name="answer4" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="correctAnswer" class="form-label">Correct Answer</label>
-                                <select class="form-select" id="correctAnswer" name="correctAnswer" required>
-                                    <option value="answer1">Answer 1</option>
-                                    <option value="answer2">Answer 2</option>
-                                    <option value="answer3">Answer 3</option>
-                                    <option value="answer4">Answer 4</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Save Question</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            document.getElementById('questionForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                
-                // Collect form data
-                var formData = new FormData(this);
-                var questionText = formData.get('questionText');
-                var answer1 = formData.get('answer1');
-                var answer2 = formData.get('answer2');
-                var answer3 = formData.get('answer3');
-                var answer4 = formData.get('answer4');
-                var correctAnswer = formData.get(formData.get('correctAnswer'));
-
-                // Create a question object
-                var question = {
-                    questionText: questionText,
-                    answers: [answer1, answer2, answer3, answer4],
-                    correctAnswer: correctAnswer
-                };
-
-                // Append the question to the hidden input
-                var questionsData = document.getElementById('questionsData');
-                var currentQuestions = JSON.parse(questionsData.value || '[]');
-                currentQuestions.push(question);
-                questionsData.value = JSON.stringify(currentQuestions);
-
-                // Append the question data to the quiz form
-                var questionList = document.getElementById('questionList');
-                var newQuestion = document.createElement('li');
-                newQuestion.textContent = questionText + " (Correct: " + correctAnswer + ")";
-                questionList.appendChild(newQuestion);
-                
-                // Hide the modal
-                var modal = bootstrap.Modal.getInstance(document.getElementById('createQuestionModal'));
-                modal.hide();
-
-                // Reset the form
-                this.reset();
-            });
-
-            // Display the quiz title
-            document.getElementById('quizTitle').addEventListener('input', function() {
-                document.getElementById('displayQuizTitle').textContent = this.value;
-            });
-        </script>
     </div>
 </body>
 </html>
-

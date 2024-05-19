@@ -6,6 +6,7 @@ import time
 import secrets
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash, generate_password_hash
+import json
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Change this to a secure secret key
@@ -51,6 +52,10 @@ class Question(db.Model):
     __tablename__ = "Question"
     id = db.Column(db.Integer, primary_key=True)
     question_text = db.Column(db.String(255), nullable=False)
+    answer_one = db.Column(db.String(255), nullable=False)
+    answer_two = db.Column(db.String(255), nullable=False)
+    answer_three = db.Column(db.String(255), nullable=False)
+    answer_four = db.Column(db.String(255), nullable=False)
     correct_answer = db.Column(db.String(100), nullable=False)
     quiz_id = db.Column(db.Integer, db.ForeignKey("Quiz.id"), nullable=False)
     quiz = db.relationship("Quiz", backref=db.backref("questions", lazy=True))
@@ -70,11 +75,9 @@ def setup_database():
     with app.app_context():
         db.create_all()
 
-
 @app.route("/")
 def root():
     return redirect(url_for("login"))
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -103,7 +106,6 @@ def login():
                 flash("Invalid email or password. Please try again.", "error")
 
     return render_template("login.html")
-
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -178,7 +180,6 @@ def verify_email(token):
         flash("Invalid or expired verification link.", "error")
         return redirect(url_for("signup"))
 
-
 @app.route("/reset_pass", methods=["GET", "POST"])
 def reset_pass():
     if request.method == "POST":
@@ -218,7 +219,6 @@ def reset_pass():
 
     return render_template("UsernamePassReset.html")
 
-
 @app.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_password_token(token):
     user = User.query.filter_by(reset_token=token).first()
@@ -237,7 +237,6 @@ def reset_password_token(token):
 
     return render_template("reset_pass.html", token=token)
 
-
 @app.route("/dashboard")
 def dashboard():
     if "user_id" in session:
@@ -246,9 +245,7 @@ def dashboard():
         return render_template("main.html", user=user, quizzes=quizzes)
     else:
         flash("You are not logged in. Please log in to access the dashboard.", "error")
-        print("User not logged in, redirecting to login.")
         return redirect(url_for("login"))
-
 
 @app.route("/logout")
 def logout():
@@ -283,6 +280,7 @@ def create_quiz():
         subject = request.form["Subject"]
         time_limit = request.form["Time"]
         user_id = session["user_id"]
+        questions_data = request.form["questionsData"]
 
         quiz = Quiz(
             title=title,
@@ -294,8 +292,6 @@ def create_quiz():
         db.session.add(quiz)
         db.session.commit()
 
-        return redirect(url_for("dashboard"))
-    return render_template("createQuiz.html")
 
 
 @app.route("/quiz_entry/<int:quiz_id>", methods=["GET", "POST"])
@@ -362,3 +358,4 @@ def result():
 if __name__ == "__main__":
     setup_database()
     app.run(debug=True)
+
