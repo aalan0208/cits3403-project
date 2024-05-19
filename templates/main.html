@@ -141,7 +141,10 @@
         </div>
         {% for quiz in quizzes %}
         <div class="box">
-            <div class="quiz-title text center">{{ quiz.title }}</div>
+            <!-- Added link to quiz page -->
+            <a href="/quiz_page/{{ quiz.id }}" class="quiz-link">
+                <div class="quiz-title text center">{{ quiz.title }}</div>
+            </a>
         </div>
         {% endfor %}
     </div>
