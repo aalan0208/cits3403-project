@@ -1,35 +1,48 @@
-$(document).ready(function(){
-    $('#account').click(function(){
-        $('#sub_panel').toggleClass('d-none');
-        $('#accountInfo').toggleClass('d-none');
+$(document).ready(function () {
+    let questions = [];
+
+    // Focus on the question text when the modal is shown
+    $('#createQuestionModal').on('shown.bs.modal', function () {
+        $('#questionText').trigger('focus');
     });
 
-    $('#setting').click(function(){
-        $('#setting_detail').toggleClass('d-none');
-    });
+    $('#saveQuestion').click(function () {
+        // Gather the form data
+        let questionText = $('#questionText').val();
+        let answerOne = $('#answerOne').val();
+        let answerTwo = $('#answerTwo').val();
+        let answerThree = $('#answerThree').val();
+        let answerFour = $('#answerFour').val();
+        let correctAnswer = $('#correctAnswer').val();
 
-    $('#setting_detail').click(function(){
-        $('body').toggleClass('dark-background');
-    });
+        // Create a question object
+        let question = {
+            questionText: questionText,
+            answers: [answerOne, answerTwo, answerThree, answerFour],
+            correctAnswer: correctAnswer
+        };
 
-    $('#logout').click(function(){
-        $('#yesno').toggleClass('d-none');
-        $('#setting_detail').addClass('d-none');
-        $('#about_contact').addClass('d-none');
-    });
+        // Append the question to the list
+        questions.push(question);
 
-    $('#no').click(function(){
-        $('#yesno').toggleClass('d-none');
-    })
+        // Update the hidden input with the questions data
+        $('#questionsData').val(JSON.stringify(questions));
 
-    $('#yes').click(function(){
-        // Perform logout here
+        // Append to question list in the UI
+        $('#questionList').append(
+            '<li>' + questionText + '<ul>' +
+            '<li>' + answerOne + '</li>' +
+            '<li>' + answerTwo + '</li>' +
+            '<li>' + answerThree + '</li>' +
+            '<li>' + answerFour + '</li>' +
+            '<li><strong>Correct Answer: </strong>' + correctAnswer + '</li>' +
+            '</ul></li>'
+        );
 
-        // Redirect to the login page
-        window.location.href = 'Login.html';       
-    });
+        // Clear the form
+        $('#questionForm')[0].reset();
 
-    $('#about').click(function(){
-        $('#about_contact').toggleClass('d-none');
+        // Close the modal
+        $('#createQuestionModal').modal('hide');
     });
 });

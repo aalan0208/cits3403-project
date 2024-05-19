@@ -17,6 +17,7 @@
 
     <!-- JavaScript -->
     <script src="{{ url_for('static', filename='quiz_page.js') }}"></script>
+    <script src = "createQuiz.js"></script>
 
     <title>Create Quiz</title>
 </head>
@@ -151,15 +152,62 @@
                     <ul id="questionList"></ul> <!-- List to display questions -->
                 </div>
             </div>
-
+            
             <!-- Button to open the modal -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createQuestionModal">
                 Create a Question
             </button>
+
+            <div class="modal fade" id="createQuestionModal" tabindex="-1" aria-labelledby="createQuestionModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createQuestionModalLabel">Create Question</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form to create a question -->
+                            <form id="questionForm">
+                                <div class="mb-3">
+                                    <label for="questionText" class="form-label">Question Text</label>
+                                    <input type="text" class="form-control" id="questionText" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="answerOne" class="form-label">Answer One</label>
+                                    <input type="text" class="form-control" id="answerOne" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="answerTwo" class="form-label">Answer Two</label>
+                                    <input type="text" class="form-control" id="answerTwo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="answerThree" class="form-label">Answer Three</label>
+                                    <input type="text" class="form-control" id="answerThree" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="answerFour" class="form-label">Answer Four</label>
+                                    <input type="text" class="form-control" id="answerFour" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="correctAnswer" class="form-label">Correct Answer</label>
+                                    <input type="text" class="form-control" id="correctAnswer" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="saveQuestion">Save Question</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Submit button -->
             <div class="col fixed-bottom-right">
                 <div class="btn btn-primary fixed-bottom-right">
-                    <input type="submit" class="btn btn-primary" value="Submit">
+                    <a href = "/main" alt = "to main page ">
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </a>
                 </div>
             </div>
         </form>

@@ -17,7 +17,7 @@
 
     <!-- JavaScript -->
     <script src="../static/quiz_page.js"></script>
-    
+    <script src= "../createQuiz.js"></script>
     <title>Main</title>
 </head>
 <body>
@@ -146,6 +146,13 @@
                 <div class="quiz-title text center">{{ quiz.title }}</div>
         </div>
         {% endfor %}
+
+        <div class="row mt-3">
+            <div class="col">
+                <ul id="questionList"></ul> <!-- List to display questions -->
+            </div>
+        </div>
+        
     </div>
 
     <script>

@@ -75,9 +75,11 @@ def setup_database():
     with app.app_context():
         db.create_all()
 
+
 @app.route("/")
 def root():
     return redirect(url_for("login"))
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -106,6 +108,7 @@ def login():
                 flash("Invalid email or password. Please try again.", "error")
 
     return render_template("login.html")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -180,6 +183,7 @@ def verify_email(token):
         flash("Invalid or expired verification link.", "error")
         return redirect(url_for("signup"))
 
+
 @app.route("/reset_pass", methods=["GET", "POST"])
 def reset_pass():
     if request.method == "POST":
@@ -219,6 +223,7 @@ def reset_pass():
 
     return render_template("UsernamePassReset.html")
 
+
 @app.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_password_token(token):
     user = User.query.filter_by(reset_token=token).first()
@@ -237,6 +242,7 @@ def reset_password_token(token):
 
     return render_template("reset_pass.html", token=token)
 
+
 @app.route("/dashboard")
 def dashboard():
     if "user_id" in session:
@@ -246,6 +252,7 @@ def dashboard():
     else:
         flash("You are not logged in. Please log in to access the dashboard.", "error")
         return redirect(url_for("login"))
+
 
 @app.route("/logout")
 def logout():
@@ -286,12 +293,30 @@ def create_quiz():
             title=title,
             grade=grade,
             subject=subject,
-            time_limit=time_limit,
+            time_limit=int(time_limit),
             creator_id=user_id,
         )
         db.session.add(quiz)
         db.session.commit()
+        # Parse and save the question
+        questions = json.loads(questions_data)
+        for q in questions:
+            question = Question(
+                question_text=q["questionText"],
+                answer_one=q["answerOne"],
+                answer_two=q["answerTwo"],
+                answer_three=q["answerThree"],
+                answer_four=q["answerFour"],
+                correct_answer=q["correctAnswer"],
+                quiz_id=quiz.id,
+            )
+            db.session.add(question)
 
+        db.session.commit()
+        flash("Quiz created successfully!", "success")
+        return redirect(url_for("main"))  # Redirect to main.html
+
+    return render_template("createQuiz.html")
 
 
 @app.route("/quiz_entry/<int:quiz_id>", methods=["GET", "POST"])
@@ -358,4 +383,3 @@ def result():
 if __name__ == "__main__":
     setup_database()
     app.run(debug=True)
-
