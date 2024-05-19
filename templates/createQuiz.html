@@ -89,7 +89,7 @@
     </div>
     
     <div class="container">
-        <form action="{{ url_for('create_quiz') }}" method="POST">
+        <form>
             <!-- Title input -->
             <div class="mb-3">
                 <label for="quizTitle" class="form-label">Quiz Title:</label>
@@ -154,13 +154,14 @@
             <div class="col">
                 <h2>Quiz Title: <span id="displayQuizTitle"></span></h2>
                 <ul id="questionList"></ul> <!-- List to display questions -->
-                <button type="button" class="btn btn-primary">Create a Question</button>
+                <!-- Add onclick event to trigger pop-up -->
+                <button type="button" class="btn btn-primary" onclick="openCreateQuestionPopup()">Create a Question</button>
             </div>
         </div>
     </div>
 
     <div class="position-fixed bottom-0 end-0 p-3">
-        <a href="#" class="btn btn-primary">Save</a>
+        <a href="#" onclick="saveQuizAndRedirect(event)" class="btn btn-primary">Save</a>
     </div>
 </body>
 </html>
