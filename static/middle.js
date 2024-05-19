@@ -36,7 +36,7 @@ function updateQuestionList() {
     var questionList = document.getElementById("questionList");
     questionList.innerHTML = ''; // Clear existing questions
     // Loop through questions and add them to the list
-    questions.forEach(function (question) {
+    questions.forEach(function (question, index) {
         var listItem = document.createElement("li");
         // Create a div to hold the question
         var questionDiv = document.createElement("div");
@@ -56,10 +56,26 @@ function updateQuestionList() {
         });
         // Append answer list to the list item
         listItem.appendChild(answerList);
+        // Create a delete button
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "btn btn-danger btn-sm";
+        deleteButton.style.marginTop = "10px";
+        deleteButton.onclick = function () {
+            deleteQuestion(index);
+        };
+        listItem.appendChild(deleteButton);
         // Append list item to the question list
         questionList.appendChild(listItem);
     });
 }
+
+function deleteQuestion(index) {
+    questions.splice(index, 1); // Remove the question from the array
+    updateQuestionList(); // Update the question list
+}
+
+
 function saveQuiz() {
     var quizTitle = document.getElementById("quizTitle").value;
 
