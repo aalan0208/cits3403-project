@@ -6,6 +6,12 @@
 <li>Zachary Ta 22972615
 </ul>
 
+## How to Run:
+
+Use: `./python3 project.py`
+Access: `http://127.0.0.1:5000`
+
+<--! make sure port is available-->
 ## Description:
 
 **introductory page:**
@@ -50,4 +56,8 @@ question that are wrong at the bottom
 right side of the page should be the score board of everyone wo have done the quiz with highest score being on top, with their time record.
 bottom right page have 'home' button that goes to home page
 
+## References:
 
+**Learning Hub Logo** : `https://images.app.goo.gl/8ZSsUXE1p2RxAuZg8` 
+
+**Login Background** : `https://images.app.goo.gl/ChbNqZU5ds8BsftE8`

@@ -7,10 +7,12 @@ from flask import (
     url_for,
     session,
     flash,
-    time,
-    random,
-    secrets,
 )
+from time import time
+
+from random import random
+
+import secrets
 
 # database
 from flask_sqlalchemy import SQLAlchemy
