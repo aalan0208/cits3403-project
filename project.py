@@ -308,35 +308,18 @@ def create_quiz():
         subject = request.form["Subject"]
         time_limit = request.form["Time"]
         user_id = session["user_id"]
-        questions_data = request.form["questionsData"]
 
         quiz = Quiz(
             title=title,
             grade=grade,
             subject=subject,
-            time_limit=int(time_limit),
+            time_limit=time_limit,
             creator_id=user_id,
         )
         db.session.add(quiz)
         db.session.commit()
-        # Parse and save the question
-        questions = json.loads(questions_data)
-        for q in questions:
-            question = Question(
-                question_text=q["questionText"],
-                answer_one=q["answerOne"],
-                answer_two=q["answerTwo"],
-                answer_three=q["answerThree"],
-                answer_four=q["answerFour"],
-                correct_answer=q["correctAnswer"],
-                quiz_id=quiz.id,
-            )
-            db.session.add(question)
 
-        db.session.commit()
-        flash("Quiz created successfully!", "success")
-        return redirect(url_for("main"))  # Redirect to main.html
-
+        return redirect(url_for("dashboard"))
     return render_template("createQuiz.html")
 
 
