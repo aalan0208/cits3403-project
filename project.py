@@ -1,11 +1,30 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+# standard libraries
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    session,
+    flash,
+    time,
+    random,
+    secrets,
+)
+
+# database
 from flask_sqlalchemy import SQLAlchemy
+
+# library for sending mail to users
 from flask_mail import Mail, Message
-import random
-import time
-import secrets
+
+# used for error checking
 from sqlalchemy.exc import IntegrityError
+
+# hashing password
 from werkzeug.security import check_password_hash, generate_password_hash
+
+# object orientated
 import json
 
 app = Flask(__name__)
